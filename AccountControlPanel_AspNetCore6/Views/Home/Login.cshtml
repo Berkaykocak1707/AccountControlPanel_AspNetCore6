@@ -1,0 +1,32 @@
+﻿@model LoginModel
+@{
+    ViewData["Title"] = "Login Page";
+}
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="card">
+            <form asp-action="Login" asp-controller="Home" class="box">
+                <h1>
+                    Login 
+                </h1>
+                <span class="text-danger">@TempData["ErrorMessage"]</span>
+                <span class="text-danger">@TempData["MailCheckError"]</span>
+                <div asp-validation-summary="All" class="text-danger"></div>
+                <p class="text-muted"> Please enter your login and password!</p>
+                <input type="text" asp-for="Username" placeholder="Username" id="usernameInput">
+                <input type="password" asp-for="Password"  placeholder="Password">
+                <a class="forgot text-muted" href="#" id="forgotPasswordLink">Forgot password?</a>
+                <input type="submit" name="" value="Login" href="#">
+                <div class="col-md-12">
+                    <ul class="social-network social-circle">
+                        <li><a asp-action="SignInTwitter" class="icoTwitter" title="Twitter"><i class="fab fa-twitter"></i></a></li>
+                        <li><a asp-action="SignInWithGoogle" class="icoGoogle" title="Google +"><i class="fab fa-google-plus"></i></a></li>
+                        <li><a asp-action="SignInGitHub" class="icoGithub" title="Github"><i class="fab fa-github"></i></a></li>
+                    </ul>
+                </div>
+                <a class="forgot text-muted" asp-action="SignUp">Do you have any account?</a>
+            </form>
+        </div>
+    </div>
+</div>

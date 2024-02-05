@@ -1,0 +1,59 @@
+﻿@model UserDtoForCreation
+@{
+    ViewData["Title"] = "Sign up";
+}
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="card">
+            <form asp-action="SignUp" asp-controller="Home" class="box" method="post" enctype="multipart/form-data">
+                <h1>Sign Up</h1>
+                <div class="text-danger">@TempData["Error"]</div>
+                <div asp-validation-summary="All" class="text-danger"></div>
+                <p class="text-muted"> Please fill in the form to create an account!</p>
+                <input type="text" asp-for="FirstName" id="firstNameInput" placeholder="First Name" required>
+                <input type="text" asp-for="LastName" id="lastNameInput" placeholder="Last Name" required>
+                <label for="file-upload" class="custom-file-upload">Choose a Profile Photo</label>
+                <input style="border:none" id="file-upload" type="file" name="Photo" accept="image/*">
+                <input type="text" asp-for="UserName" id="userNameInput" placeholder="Username" required>
+                <input type="password" asp-for="Password" id="passwordInput" placeholder="Password" required>
+                <input type="password" name="ConfirmPassword" id="confirmPasswordInput" placeholder="Confirm Password" required>
+                <input type="email" asp-for="Email" id="emailInput" placeholder="Email" required>
+                <input type="text" asp-for="PhoneNumber" id="phoneNumberInput" placeholder="Phone Number" required>
+                <input type="date" asp-for="DateOfBirth" id="dateOfBirthInput" placeholder="Date of Birth" required>
+                <input type="submit" value="Sign Up">
+                <a class="forgot text-muted" asp-action="Login">Already have an account?</a>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            var form = document.querySelector("form");
+            form.addEventListener("submit", function (event) {
+                var password = document.getElementById('passwordInput').value;
+                var confirmPassword = document.getElementById('confirmPasswordInput').value;
+                var dateOfBirth = document.getElementById('dateOfBirthInput').value;
+
+                if (password !== confirmPassword) {
+                    event.preventDefault();
+                    alert("Password and Confirm Password must match.");
+                    return false;
+                }
+
+                var today = new Date();
+                var dob = new Date(dateOfBirth);
+                var minimumDate = new Date(today.getFullYear() - 120, today.getMonth(), today.getDate());
+                if (dob > today || dob < minimumDate) {
+                    event.preventDefault();
+                    alert("Please enter a valid Date of Birth. The date must be in the past and not absurdly old.");
+                    return false;
+                }
+                return true;
+            });
+        });
+    </script>
+}
+
