@@ -3,7 +3,7 @@
 Before using this project, you must carefully configure the email authentication and other necessary settings in the `appsettings.json` file. The project will not function correctly if you do not enter all the required keys.
 
 # AccountControlPanel - ASP.NET Core 6 Web Application
-**AccountControlPanel** is an account control panel application developed using ASP.NET Core 6. This platform is designed with a modern interface and robust backend to facilitate user management and account operations.
+Account Control Panel is an account control panel application developed using ASP.NET Core 6. This platform is designed with a modern interface and a robust backend to simplify user management and account operations. Users can register via social media (twitter, github and google) if they wish. A small project that can manage user systems in projects.
 
 ## Technology Stack
 - **Framework**: ASP.NET Core 6
