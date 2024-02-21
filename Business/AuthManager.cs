@@ -202,33 +202,34 @@ namespace Business
             return await _userManager.AddLoginAsync(user,loginInfo);
         }
 
-        public async Task<string> CheckUserLoginAsync(string loginProvider, string providerKey,UserDtoForCreation? userDtoFor)
-        {
-            var user = await _userManager.FindByLoginAsync(loginProvider, providerKey);
-            if (user != null)
-            {
-                await _signInManager.SignOutAsync();
-                await _signInManager.SignInAsync(user, isPersistent: false);
-                return "Ok.";
-            }
-            else if (userDtoFor is not null)
-            {
-                var email = await _userManager.FindByEmailAsync(userDtoFor.Email);
-                if (email == null)
-                {
-                    var newUsername = userDtoFor.UserName + "Twitter";
-                    userDtoFor.UserName = newUsername;
-                    await CreateUserAsync(userDtoFor, null);
-                    var userNew = await _userManager.FindByNameAsync(newUsername);
-                    var loginInfo = new UserLoginInfo("Twitter", providerKey, "Twitter");
-                    await AddUserLoginAsync(userNew, loginInfo);
-                    await _signInManager.SignInAsync(userNew, isPersistent: false);
-                        
-                    return "Ok.";
-                }
-                return "This email is in use. If you have forgotten your password, you can reset your password with your username.";
-            }
-            return "Bad.";
-        }
-    }
+		public async Task<string> CheckUserLoginAsync(string loginProvider, string providerKey, UserDtoForCreation? userDtoFor)
+		{
+			var user = await _userManager.FindByLoginAsync(loginProvider, providerKey);
+			if (user != null)
+			{
+				await _signInManager.SignOutAsync();
+				await _signInManager.SignInAsync(user, isPersistent: false);
+				return "Ok.";
+			}
+			else if (userDtoFor is not null)
+			{
+				var email = await _userManager.FindByEmailAsync(userDtoFor.Email);
+				if (email == null)
+				{
+					var newUsername = userDtoFor.UserName + "-" + loginProvider;
+					userDtoFor.UserName = newUsername;
+					await CreateUserAsync(userDtoFor, null);
+					var userNew = await _userManager.FindByNameAsync(newUsername);
+					await _userManager.SetLockoutEnabledAsync(userNew, false);
+					var loginInfo = new UserLoginInfo(loginProvider, providerKey, loginProvider);
+					await AddUserLoginAsync(userNew, loginInfo);
+					await _signInManager.SignInAsync(userNew, isPersistent: false);
+
+					return "First.";
+				}
+				return "This email is in use. If you have forgotten your password, you can reset your password with your username.";
+			}
+			return "Bad.";
+		}
+	}
 }
